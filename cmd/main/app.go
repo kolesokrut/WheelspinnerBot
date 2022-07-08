@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	log.Print("loading config")
 	cfg, _ := config.LoadConfig("dev")
 
 	app, err := internal.NewApp(cfg.TelegramToken)
