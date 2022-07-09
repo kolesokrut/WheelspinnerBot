@@ -7,3 +7,8 @@ db:
   port: port
   name: name
   driver: driver
+api:
+  openweather : openweather
+  soundcloud : soundcloud
+  tiktok : tiktok
+  youtube : youtube

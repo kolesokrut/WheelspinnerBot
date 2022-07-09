@@ -37,8 +37,8 @@ func (a *app) Run() {
 var (
 	menu = &t.ReplyMarkup{ResizeKeyboard: true}
 
-	btnWeather  = menu.Text("Погода")
-	btnCurrency = menu.Text("Валюта")
+	btnWeather  = menu.Text("⛅️Погода")
+	btnCurrency = menu.Text("🏛Валюта")
 
 	db *sql.DB
 )
@@ -87,7 +87,7 @@ func (a *app) startBot() {
 			panic(err)
 		}
 
-		return c.Send(banking.Weather(cit.Name))
+		return c.Send(banking.Weather(cfg.Api.OpenWeather, cit.Name))
 	})
 
 	b.Handle(t.OnText, func(c t.Context) error {
@@ -99,17 +99,17 @@ func (a *app) startBot() {
 		}
 
 		if u.Host == "youtube.com" || u.Host == "youtu.be" {
-			a.msg, _ = youtube.DownloadMP3(text)
+			a.msg, _ = youtube.DownloadMP3(text, cfg.Api.Youtube)
 			c.Send(&t.Audio{File: t.FromURL(a.msg)})
 		}
 
 		if u.Host == "tiktok.com" || u.Host == "vm.tiktok.com" {
-			a.msg = tiktok.DownloadVideo(text)
+			a.msg = tiktok.DownloadVideo(text, cfg.Api.Tiktok)
 			c.Send(&t.Audio{File: t.FromURL(a.msg)})
 		}
 
 		if u.Host == "soundcloud.com" || u.Host == "soundcloud.app.goo.gl" {
-			a.msg = soundcloud.DownloadMusic(text)
+			a.msg = soundcloud.DownloadMusic(text, cfg.Api.Soundcloud)
 			c.Send(&t.Audio{File: t.FromURL(a.msg)})
 		}
 
