@@ -38,12 +38,12 @@ func getLinkFromResponse(URL string) string {
 	return link
 }
 
-func DownloadMusic(link string) string {
+func DownloadMusic(link, api string) string {
 	URL := fmt.Sprintf("https://soundcloud4.p.rapidapi.com/song/download?track_url=%s", getLinkFromResponse(link))
 
 	req, _ := http.NewRequest("GET", URL, nil)
 
-	req.Header.Add("X-RapidAPI-Key", "0f0ab81e36msh7cec3da23406dd7p14872ejsnb52d8ae809a8")
+	req.Header.Add("X-RapidAPI-Key", api)
 	req.Header.Add("X-RapidAPI-Host", "soundcloud4.p.rapidapi.com")
 
 	res, _ := http.DefaultClient.Do(req)

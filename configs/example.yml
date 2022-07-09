@@ -1,1 +1,14 @@
 telegram-token: token
+db:
+  username: username
+  password: password
+  protocol: protocol
+  host: host
+  port: port
+  name: name
+  driver: driver
+api:
+  openweather : openweather
+  soundcloud : soundcloud
+  tiktok : tiktok
+  youtube : youtube

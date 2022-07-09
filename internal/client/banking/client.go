@@ -98,8 +98,8 @@ func Banks() (msg string) {
 	return
 }
 
-func Weather(city string) (msg string) {
-	URL := fmt.Sprintf("https://api.openweathermap.org/data/2.5/find?q=%s,UA&units=metric&lang=RU&type=like&APPID=e758c2bb3a5063fb92a4cc53e9756c30", city)
+func Weather(city, api string) (msg string) {
+	URL := fmt.Sprintf("https://api.openweathermap.org/data/2.5/find?q=%s,UA&units=metric&lang=RU&type=like&APPID=%s", city, api)
 
 	body := decode(URL)
 	var result OpenWeather

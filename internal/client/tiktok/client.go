@@ -8,12 +8,12 @@ import (
 	"strings"
 )
 
-func DownloadVideo(link string) string {
+func DownloadVideo(link, api string) string {
 	url := fmt.Sprintf("https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid/index?url=%s", link)
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("X-RapidAPI-Key", "0f0ab81e36msh7cec3da23406dd7p14872ejsnb52d8ae809a8")
+	req.Header.Add("X-RapidAPI-Key", api)
 	req.Header.Add("X-RapidAPI-Host", "tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com")
 
 	res, _ := http.DefaultClient.Do(req)
