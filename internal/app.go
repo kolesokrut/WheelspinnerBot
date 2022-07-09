@@ -87,7 +87,7 @@ func (a *app) startBot() {
 			panic(err)
 		}
 
-		return c.Send(banking.Weather(cfg.Api.OpenWeather, cit.Name))
+		return c.Send(banking.Weather(cit.Name, cfg.Api.OpenWeather))
 	})
 
 	b.Handle(t.OnText, func(c t.Context) error {
@@ -112,6 +112,8 @@ func (a *app) startBot() {
 			a.msg = soundcloud.DownloadMusic(text, cfg.Api.Soundcloud)
 			c.Send(&t.Audio{File: t.FromURL(a.msg)})
 		}
+
+		c.Bot().Delete(c.Message())
 
 		return nil
 	})
