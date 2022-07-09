@@ -3,6 +3,7 @@ db:
   username: username
   password: password
   protocol: protocol
-  address: address
+  host: host
+  port: port
   name: name
   driver: driver

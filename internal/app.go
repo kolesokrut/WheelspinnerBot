@@ -46,7 +46,7 @@ var (
 func (a *app) startBot() {
 	cfg, _ := config.LoadConfig("dev")
 
-	db, err := sql.Open(cfg.DB.Driver, fmt.Sprintf("%s:%s@%s(%s)/%s", cfg.DB.Username, cfg.DB.Password, cfg.DB.Protocol, cfg.DB.Address, cfg.DB.Name))
+	db, err := sql.Open(cfg.DB.Driver, fmt.Sprintf("%s:%s@%s(%s:%s)/%s", cfg.DB.Username, cfg.DB.Password, cfg.DB.Protocol, cfg.DB.Host, cfg.DB.Port, cfg.DB.Name))
 	if err != nil {
 		panic(err.Error())
 	}
