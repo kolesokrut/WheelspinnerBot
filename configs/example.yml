@@ -1,1 +1,8 @@
 telegram-token: token
+db:
+  username: username
+  password: password
+  protocol: protocol
+  address: address
+  name: name
+  driver: driver
