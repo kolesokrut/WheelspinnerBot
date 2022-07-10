@@ -16,8 +16,9 @@ import (
 )
 
 type app struct {
-	cfg string
-	msg string
+	cfg              string
+	msg              string
+	cityPayloadIsNil bool
 }
 
 type App interface {
@@ -41,6 +42,14 @@ var (
 	btnCurrency = menu.Text("🏛Валюта")
 
 	db *sql.DB
+)
+
+const (
+	commandStart      = "/start"
+	commandYoutube    = "/youtube"
+	commandTikTok     = "/tiktok"
+	commandSoundCloud = "/soundcloud"
+	commandCity       = "/setcity"
 )
 
 func (a *app) startBot() {
@@ -98,6 +107,31 @@ func (a *app) startBot() {
 			return err
 		}
 
+		if a.cityPayloadIsNil == true {
+			cit := banking.City{}
+			row := db.QueryRow("select * from telegramdb.citynames where id = ?", c.Message().Sender.ID)
+
+			row.Scan(&cit.Id, &cit.Name)
+
+			if cit.Id == 0 {
+				_, err := db.Exec("insert into telegramdb.citynames (id, city) values (?, ?)",
+					c.Message().Sender.ID, text)
+				if err != nil {
+					panic(err)
+				}
+
+				return c.Send(fmt.Sprintf("Вы выбрали город: %s", text))
+			}
+
+			_, err := db.Exec("update telegramdb.citynames set city = ? where id = ?", text, c.Message().Sender.ID)
+			if err != nil {
+				panic(err)
+			}
+			println(text)
+
+			return c.Send(fmt.Sprintf("Вы выбрали город: %s", text))
+		}
+
 		if u.Host == "youtube.com" || u.Host == "youtu.be" {
 			a.msg, _ = youtube.DownloadMP3(text, cfg.Api.Youtube)
 			c.Send(&t.Audio{File: t.FromURL(a.msg)})
@@ -110,35 +144,35 @@ func (a *app) startBot() {
 
 		if u.Host == "soundcloud.com" || u.Host == "soundcloud.app.goo.gl" {
 			a.msg = soundcloud.DownloadMusic(text, cfg.Api.Soundcloud)
-			c.Send(&t.Audio{File: t.FromURL(a.msg)})
+			c.Send(&t.Audio{File: t.FromURL(a.msg), FileName: "sdf", Title: "fsffs", MIME: "dadad", Performer: "chlen", Caption: "dadasd"})
 		}
 
 		c.Bot().Delete(c.Message())
-
 		return nil
 	})
 
-	b.Handle("/start", func(c t.Context) error {
+	b.Handle(commandStart, func(c t.Context) error {
 		return c.Send("Hello!", menu)
 	})
 
-	b.Handle("/youtube", func(c t.Context) error {
+	b.Handle(commandYoutube, func(c t.Context) error {
 		return c.Send("give youtube link")
 	})
 
-	b.Handle("/tiktok", func(c t.Context) error {
+	b.Handle(commandTikTok, func(c t.Context) error {
 		return c.Send("give tiktok link")
 	})
 
-	b.Handle("/soundcloud", func(c t.Context) error {
+	b.Handle(commandSoundCloud, func(c t.Context) error {
 		return c.Send("give soundcloud link")
 	})
 
-	b.Handle("/setcity", func(c t.Context) error {
+	b.Handle(commandCity, func(c t.Context) error {
 		if len(c.Message().Payload) == 0 {
-			// переделать
-			return c.Send("Введите город после команды")
+			a.cityPayloadIsNil = true
+			return c.Send("Введите город")
 		}
+		a.cityPayloadIsNil = false
 
 		cit := banking.City{}
 		row := db.QueryRow("select * from telegramdb.citynames where id = ?", c.Message().Sender.ID)
