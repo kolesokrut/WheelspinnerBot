@@ -139,12 +139,12 @@ func (a *app) startBot() {
 
 		if u.Host == "tiktok.com" || u.Host == "vm.tiktok.com" {
 			a.msg = tiktok.DownloadVideo(text, cfg.Api.Tiktok)
-			c.Send(&t.Audio{File: t.FromURL(a.msg)})
+			c.Send(&t.Video{File: t.FromURL(a.msg)})
 		}
 
 		if u.Host == "soundcloud.com" || u.Host == "soundcloud.app.goo.gl" {
 			a.msg = soundcloud.DownloadMusic(text, cfg.Api.Soundcloud)
-			c.Send(&t.Audio{File: t.FromURL(a.msg), FileName: "sdf", Title: "fsffs", MIME: "dadad", Performer: "chlen", Caption: "dadasd"})
+			c.Send(&t.Audio{File: t.FromURL(a.msg)})
 		}
 
 		c.Bot().Delete(c.Message())
